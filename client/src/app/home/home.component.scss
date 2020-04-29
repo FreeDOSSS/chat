@@ -1,0 +1,25 @@
+.box {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+}
+
+.form {
+  padding: 10px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.fields {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.submit {
+  background-color: tomato;
+  padding: 5px;
+  border: none;
+}

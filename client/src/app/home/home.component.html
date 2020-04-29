@@ -1,0 +1,12 @@
+<div class="box">
+  <form class="form" (submit)="onSubmit($event)">
+    <input
+      type="text"
+      placeholder="Name"
+      class="fields"
+      (input)="onInput($event)"
+      [value]="name"
+    />
+    <input type="submit" value="GO!" class="submit" />
+  </form>
+</div>

@@ -1,0 +1,12 @@
+.box {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-list {
+  height: 500px;
+  overflow: hidden;
+  background-color: #ccc;
+}
