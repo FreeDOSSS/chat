@@ -7,11 +7,12 @@ import { connect } from './../../api/ws.js';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-  //  socket;
+  status: boolean = false;
 
   constructor() {}
 
   ngOnInit(): void {
+    connect().onopen = () => (this.status = true);
     // let socket = new WebSocket('ws://localhost:7000');
     // socket.onopen = function (e) {
     //   // socket.send('Меня зовут Джон');
@@ -25,7 +26,6 @@ export class ChatComponent implements OnInit {
     //   }
     // };
     // socket.onerror = function (error) {};
-    connect();
   }
 
   // sendMessage({ target }) {
