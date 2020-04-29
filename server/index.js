@@ -16,21 +16,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(router);
 
 app.ws("/", function (ws, req) {
-  ws.send("Connected");
+  Message.findAll().then((data) => ws.send(JSON.stringify(data)));
+  // Message.findAll().then((data) => console.log("data", JSON.stringify(data)));
 
   ws.on("message", function (msg) {
-    console.log("msg", msg);
-  });
-});
+    const body = JSON.parse(msg);
+    const newMessage = { ...body };
 
-sequelize.sync();
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
+    Message.create(newMessage).then((mes) => {
+      ws.send(JSON.stringify([mes]));
+    });
   });
+
+  // ws.
+});
 
 app.listen(port, () => console.log(`Server start, port ${port}`));

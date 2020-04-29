@@ -14,7 +14,7 @@ function auth(req, res) {
       if (userDb) {
         Users.update({ token }, { where: { name } })
           .then(() => {
-            return res.status(200).json({ token });
+            return res.status(200).json({ token, name });
           })
           .catch((err) => console.log("err", err));
       } else {

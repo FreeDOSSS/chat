@@ -1,10 +1,14 @@
 <div class="box">
   <div>
-    <p class="chat-list">
-      {{ status }}
-    </p>
-    <form>
-      <input type="text" />
+    <h2>Статус: {{ status ? "online" : "offline" }}</h2>
+    <div class="chat-list">
+      <div *ngFor="let mes of list">
+        <h6>{{ mes.name }}</h6>
+        <!-- <p>{{ mes.message }}</p> -->
+      </div>
+    </div>
+    <form (submit)="send($event)">
+      <input type="text" [value]="mes" (input)="saveInput($event)" />
       <input type="submit" />
     </form>
   </div>

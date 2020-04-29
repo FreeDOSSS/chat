@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
       .get(`${params.serverUrl}/auth?name=${this.name}`)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('name', data.name);
         this.router.navigate(['/chat']);
       })
       .catch((err) => console.log('err', err));
