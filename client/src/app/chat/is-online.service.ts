@@ -10,7 +10,8 @@ export class IsOnlineService {
 
   constructor() {
     this.list.next([]);
-    this.client.next([]);
+    this.list.subscribe((v) => console.log('v', v));
+    // this.client.next();
 
     this.list.next(1);
     this.list.next(2);
@@ -25,9 +26,9 @@ export class IsOnlineService {
     //   // };
   }
 
-  // getList() {
-  //   return this.list;
-  // }
+  getList() {
+    return this.list;
+  }
 
   // clientIsOnline(name) {
   //   return this.client;

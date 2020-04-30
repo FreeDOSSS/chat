@@ -30,11 +30,10 @@ export class ChatComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
-    this.onlineService.list.subscribe({
-      next: (value) => {
-        console.log('value', value);
-        this.list = value;
-      },
+    console.log('this.onlineService.getList()', this.onlineService.getList());
+    this.onlineService.getList().subscribe((value) => {
+      console.log('value', value);
+      this.list = value;
     });
     isAuth(this.router);
     // this.onlineService.list.subscribe({
