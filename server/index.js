@@ -46,8 +46,8 @@ app.ws("/", function (ws, req) {
   });
 
   ws.on("close", () => {
-    console.log("ws.id", ws.id);
     delete client[ws.id];
+    // expressWs.getWss().clients.forEach((el) => console.log("el", el));
     expressWs
       .getWss()
       .clients.forEach((el) => el.send(JSON.stringify({ client })));

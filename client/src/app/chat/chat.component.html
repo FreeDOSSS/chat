@@ -2,17 +2,11 @@
   <div>
     <h2>Статус: {{ status ? "online" : "offline" }}</h2>
     <div #scrollMe class="chat-list">
-      <div *ngFor="let message of list" class="message">
-        <h5>
-          <span
-            class="{{ client.includes(message.name) ? 'online' : 'offline' }}"
-          ></span>
-          {{ message.name }}
-        </h5>
-        <p>{{ client.includes(message.name) ? "online" : "offline" }}</p>
-
-        <p>{{ message.message }}</p>
-      </div>
+      <app-message
+        *ngFor="let message of list"
+        [name]="message.name"
+        [message]="message.message"
+      ></app-message>
     </div>
     <form (submit)="send($event)">
       <input type="text" [value]="mes" (input)="saveInput($event)" />

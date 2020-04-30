@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { connect, sendMessage } from './../../api/ws.js';
+import { socket, sendMessage } from './../../api/ws.js';
 import { Router } from '@angular/router';
 
 import isAuth from './../../api/isAuth.js';
+import { IsOnlineService } from './is-online.service.js';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+  providers: [IsOnlineService],
 })
 export class ChatComponent implements OnInit {
   status: boolean = false;
@@ -15,24 +17,35 @@ export class ChatComponent implements OnInit {
   list = [];
   client = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private onlineService: IsOnlineService) {
+    // socket.onmessage = (event) => {
+    //   const body = JSON.parse(event.data);
+    //   console.log('In Chat');
+    //   if (body.mes) {
+    //     this.list = [...this.list, ...body.mes];
+    //   }
+    // };
+  }
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
-    const socket = connect();
+    this.onlineService.list.subscribe({
+      next: (value) => {
+        console.log('value', value);
+        this.list = value;
+      },
+    });
     isAuth(this.router);
-    socket.onmessage = (event) => {
-      const body = JSON.parse(event.data);
+    // this.onlineService.list.subscribe({
+    //   next: (value) => {
+    //     console.log('value', value);
+    //     this.list = value;
+    //   },
+    // });
 
-      if (body.mes) {
-        this.list = [...this.list, ...body.mes];
-      }
-      this.client = Object.values(body.client);
-      console.log('body.client', body.client);
-      console.log('this.client', this.client);
-    };
     this.scrollToBottom();
+
     socket.onopen = () => (this.status = true);
     socket.onclose = () => (this.status = false);
   }
