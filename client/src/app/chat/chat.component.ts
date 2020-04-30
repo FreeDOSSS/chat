@@ -12,24 +12,25 @@ import isAuth from './../../api/isAuth.js';
 export class ChatComponent implements OnInit {
   status: boolean = false;
   mes: string = '';
-  public list = [{ message: '1', name: '1' }];
-
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-
-  scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch (err) {}
-  }
+  list = [];
+  client = [];
 
   constructor(private router: Router) {}
+
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
     const socket = connect();
     isAuth(this.router);
-    socket.onmessage = ({ data }) => {
-      const body = JSON.parse(data);
-      body.forEach((el) => this.list.push(el));
+    socket.onmessage = (event) => {
+      const body = JSON.parse(event.data);
+
+      if (body.mes) {
+        this.list = [...this.list, ...body.mes];
+      }
+      this.client = Object.values(body.client);
+      console.log('body.client', body.client);
+      console.log('this.client', this.client);
     };
     this.scrollToBottom();
     socket.onopen = () => (this.status = true);
@@ -42,6 +43,12 @@ export class ChatComponent implements OnInit {
 
   saveInput({ target }) {
     this.mes = target.value;
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   send(event) {

@@ -13,18 +13,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(router);
 
+const client = {};
+
 app.ws("/", function (ws, req) {
-  Message.findAll().then((data) => ws.send(JSON.stringify(data)));
+  const { name } = req.query;
+
+  const id = Math.random();
+  ws.id = id;
+  client[id] = name;
+
+  Message.findAll().then((data) =>
+    ws.send(JSON.stringify({ mes: data, client }))
+  );
+
+  expressWs
+    .getWss()
+    .clients.forEach((el) => el.send(JSON.stringify({ client })));
 
   ws.on("message", function (msg) {
     const body = JSON.parse(msg);
     const newMessage = { ...body };
 
+    console.log("client", client);
+
     Message.create(newMessage).then((mes) => {
       expressWs
         .getWss()
-        .clients.forEach((el) => el.send(JSON.stringify([mes])));
+        .clients.forEach((el) =>
+          el.send(JSON.stringify({ mes: [mes], client }))
+        );
     });
+  });
+
+  ws.on("close", () => {
+    console.log("ws.id", ws.id);
+    delete client[ws.id];
+    expressWs
+      .getWss()
+      .clients.forEach((el) => el.send(JSON.stringify({ client })));
   });
 });
 

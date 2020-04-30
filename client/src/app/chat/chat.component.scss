@@ -19,4 +19,23 @@
   p {
     margin: 0;
   }
+
+  h5 {
+    span {
+      display: inline-block;
+      $size: 10px;
+      width: $size;
+      height: $size;
+
+      border-radius: $size;
+
+      margin-right: 5px;
+      &.online {
+        background-color: green;
+      }
+      &.offline {
+        background-color: red;
+      }
+    }
+  }
 }

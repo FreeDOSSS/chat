@@ -1,8 +1,8 @@
 let socket;
-
+import params from "./../constants/params";
+const { wsServerUrl } = params;
 export const connect = () => {
-  socket = new WebSocket("ws://localhost:7000");
-  // socket.onopen = (e) => true;
+  socket = new WebSocket(`${wsServerUrl}?name=${localStorage.getItem("name")}`);
   return socket;
 };
 
