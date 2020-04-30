@@ -8,5 +8,15 @@
 .chat-list {
   height: 500px;
   overflow: hidden;
+  overflow-y: scroll;
   background-color: #ccc;
+  padding: 10px;
+}
+
+.message {
+  margin-bottom: 10px;
+  h5,
+  p {
+    margin: 0;
+  }
 }

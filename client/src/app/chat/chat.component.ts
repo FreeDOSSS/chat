@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { connect, sendMessage } from './../../api/ws.js';
+import { Router } from '@angular/router';
+
+import isAuth from './../../api/isAuth.js';
 
 @Component({
   selector: 'app-chat',
@@ -8,18 +11,33 @@ import { connect, sendMessage } from './../../api/ws.js';
 })
 export class ChatComponent implements OnInit {
   status: boolean = false;
-  mes: string = 'sd ';
-  list: any[] = [{ message: 'asdad', name: 'asdad' }];
-  constructor() {}
+  mes: string = '';
+  public list = [{ message: '1', name: '1' }];
+
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     const socket = connect();
-    socket.onmessage = function ({ data }) {
+    isAuth(this.router);
+    socket.onmessage = ({ data }) => {
       const body = JSON.parse(data);
-      this.list = [...body];
-      console.log('this.list', this.list);
+      body.forEach((el) => this.list.push(el));
     };
+    this.scrollToBottom();
     socket.onopen = () => (this.status = true);
+    socket.onclose = () => (this.status = false);
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   saveInput({ target }) {
@@ -29,5 +47,6 @@ export class ChatComponent implements OnInit {
   send(event) {
     event.preventDefault();
     sendMessage(this.mes);
+    this.mes = '';
   }
 }

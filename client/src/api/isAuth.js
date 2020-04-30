@@ -1,6 +1,6 @@
 import axios from "axios";
 import params from "./../constants/params";
-
+// import { Router } from "@angular/router";
 function isAuth(router) {
   if (localStorage.getItem("token")) {
     axios
@@ -10,7 +10,7 @@ function isAuth(router) {
         },
       })
       .then((data) => router.navigate(["/chat"]))
-      .catch((err) => console.log("err", err));
+      .catch((err) => console.log("err isAuth", err));
   } else {
     router.navigate(["/"]);
   }

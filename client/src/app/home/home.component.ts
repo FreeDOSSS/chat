@@ -11,7 +11,7 @@ import isAuth from './../../api/isAuth.js';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  name = '';
+  name: string = '';
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -20,10 +20,9 @@ export class HomeComponent implements OnInit {
 
   onInput({ target }) {
     this.name = target.value;
-    console.log('this.name', this.name);
   }
 
-  onSubmit(event: any) {
+  onSubmit(event) {
     event.preventDefault();
 
     axios
