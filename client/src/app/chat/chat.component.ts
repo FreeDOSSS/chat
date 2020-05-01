@@ -15,35 +15,18 @@ export class ChatComponent implements OnInit {
   status: boolean = false;
   mes: string = '';
   list = [];
-  client = [];
+  // client = [];
 
-  constructor(private router: Router, private onlineService: IsOnlineService) {
-    // socket.onmessage = (event) => {
-    //   const body = JSON.parse(event.data);
-    //   console.log('In Chat');
-    //   if (body.mes) {
-    //     this.list = [...this.list, ...body.mes];
-    //   }
-    // };
-  }
+  constructor(private router: Router, private onlineService: IsOnlineService) {}
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
-    console.log('this.onlineService.getList()', this.onlineService.getList());
-    this.onlineService.getList().subscribe((value) => {
-      console.log('value', value);
-      this.list = value;
-    });
     isAuth(this.router);
-    // this.onlineService.list.subscribe({
-    //   next: (value) => {
-    //     console.log('value', value);
-    //     this.list = value;
-    //   },
-    // });
-
-    this.scrollToBottom();
+    this.onlineService.list.subscribe((x) => {
+      this.list = [...this.list, ...x];
+    });
+    this.onlineService.start();
 
     socket.onopen = () => (this.status = true);
     socket.onclose = () => (this.status = false);
@@ -53,6 +36,7 @@ export class ChatComponent implements OnInit {
     this.scrollToBottom();
   }
 
+  // TODO: Убрать и перенести в send
   saveInput({ target }) {
     this.mes = target.value;
   }

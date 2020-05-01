@@ -1,36 +1,34 @@
 import { Injectable, OnInit } from '@angular/core';
 import { socket } from '../../api/ws.js';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject, AsyncSubject } from 'rxjs';
 @Injectable({
-  providedIn: 'root',
+  // providedIn: 'root',
 })
 export class IsOnlineService {
-  public client = new Subject<any>();
+  // public client = new BehaviorSubject<any>([]);
+  client$ = new Subject<any>();
   public list = new Subject<any>();
+  public client;
 
   constructor() {
-    this.list.next([]);
-    this.list.subscribe((v) => console.log('v', v));
-    // this.client.next();
-
-    this.list.next(1);
-    this.list.next(2);
-
-    //   socket.onmessage = (event) => {
-    //     const body = JSON.parse(event.data);
-    //   //   this.client.next(Object.values(body.client));
-    //   //   if (body.mes) {
-    //   //     this.list.next(body.mes);
-    //   //     console.log(body.mes);
-    //   //   }
-    //   // };
+    this.client$.subscribe({ next: (v) => console.log('v', v) });
+    // this.client$.next([0]);
   }
 
-  getList() {
-    return this.list;
-  }
+  start() {
+    // TODO: Понять почему не работает в конструкторе
+    socket.onmessage = (event) => {
+      const body = JSON.parse(event.data);
+      const arrClient = Object.values(body.client);
 
-  // clientIsOnline(name) {
-  //   return this.client;
-  // }
+      // this.client$.next([1]);
+      setTimeout(() => {
+        this.client$.next(arrClient);
+      });
+
+      if (body.mes) {
+        this.list.next(body.mes);
+      }
+    };
+  }
 }
