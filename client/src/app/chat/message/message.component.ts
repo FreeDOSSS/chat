@@ -10,15 +10,15 @@ import { IsOnlineService } from '../is-online.service.js';
 export class MessageComponent implements OnInit {
   @Input() name: string;
   @Input() message: string;
-  public status;
+  @Input() status;
 
   constructor(private onlineService: IsOnlineService) {}
 
   ngOnInit(): void {
-    this.onlineService.client$.subscribe((x) => {
-      console.log('x', x);
-    });
-    // this.onlineService.kos(this.status);
+    this.getStatus();
+    // this.onlineService.client$.subscribe((x) => {
+    //   console.log('x', x);
+    // });
   }
 
   getStatus() {}

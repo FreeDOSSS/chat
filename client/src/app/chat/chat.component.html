@@ -6,6 +6,7 @@
         *ngFor="let message of list"
         [name]="message.name"
         [message]="message.message"
+        [status]="onlineService.client$ | async | online: message.name"
       ></app-message>
     </div>
     <form (submit)="send($event)">
