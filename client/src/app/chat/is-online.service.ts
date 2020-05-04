@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
-import params from './../../constants/params.js';
+import params from '../../constants/params.js';
 const { wsServerUrl } = params;
 @Injectable({
   providedIn: 'root',

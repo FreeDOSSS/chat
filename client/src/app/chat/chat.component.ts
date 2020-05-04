@@ -1,8 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
-import isAuth from './../../api/isAuth.js';
+import isAuth from '../../api/isAuth.js';
 import { IsOnlineService } from './is-online.service.js';
+
+interface List {
+  message: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-chat',
@@ -11,8 +16,7 @@ import { IsOnlineService } from './is-online.service.js';
 })
 export class ChatComponent implements OnInit {
   status: boolean = false;
-  list = [];
-  // client = [];
+  list: List[] = [];
 
   constructor(private router: Router, public onlineService: IsOnlineService) {}
 
@@ -20,7 +24,6 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     isAuth(this.router);
-    // this.onlineService.socket;
     this.onlineService.connect();
     this.onlineService.list.subscribe((x) => {
       this.list = [...this.list, ...x];

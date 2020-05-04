@@ -3,23 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { ChatComponent } from './chat/chat.component';
-import { HttpClientModule } from '@angular/common/http';
-import { MessageComponent } from './chat/message/message.component';
-import { OnlinePipe } from './chat/online.pipe';
-import { IsOnlineService } from './chat/is-online.service';
+import { HomeModule } from './home/home.module';
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ChatComponent,
-    MessageComponent,
-    OnlinePipe,
-  ],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule],
-  providers: [IsOnlineService],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, HomeModule, ChatModule],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
