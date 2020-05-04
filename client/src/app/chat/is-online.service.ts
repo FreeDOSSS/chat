@@ -1,27 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
-import { socket } from '../../api/ws.js';
+import { Subject, BehaviorSubject } from 'rxjs';
+import params from './../../constants/params.js';
+const { wsServerUrl } = params;
 @Injectable({
   providedIn: 'root',
 })
 export class IsOnlineService {
   public client$ = new BehaviorSubject<any>([]);
-  // public client$ = new Subject<any>();
-
-  // clientChenge$ = this.client$.asObservable();
   public list = new Subject<any>();
+  public socket;
 
   constructor() {}
 
-  start() {
-    socket.onmessage = (event) => {
+  connect() {
+    this.socket = new WebSocket(
+      `${wsServerUrl}?name=${localStorage.getItem('name')}`
+    );
+
+    this.socket.onmessage = (event) => {
       const body = JSON.parse(event.data);
+
       const arrClient = Object.values(body.client);
-      console.log(arrClient);
+
       this.client$.next(arrClient);
       if (body.mes) {
         this.list.next(body.mes);
       }
     };
+  }
+
+  sendMessage(message) {
+    const body = JSON.stringify({
+      message,
+      name: localStorage.getItem('name'),
+    });
+    this.socket.send(body);
   }
 }

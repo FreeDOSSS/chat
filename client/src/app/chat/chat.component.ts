@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { socket, sendMessage } from './../../api/ws.js';
 import { Router } from '@angular/router';
 
 import isAuth from './../../api/isAuth.js';
@@ -12,7 +11,6 @@ import { IsOnlineService } from './is-online.service.js';
 })
 export class ChatComponent implements OnInit {
   status: boolean = false;
-  mes: string = '';
   list = [];
   // client = [];
 
@@ -22,23 +20,18 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     isAuth(this.router);
-
-    this.onlineService.start();
+    // this.onlineService.socket;
+    this.onlineService.connect();
     this.onlineService.list.subscribe((x) => {
       this.list = [...this.list, ...x];
     });
 
-    socket.onopen = () => (this.status = true);
-    socket.onclose = () => (this.status = false);
+    this.onlineService.socket.onopen = () => (this.status = true);
+    this.onlineService.socket.onclose = () => (this.status = false);
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
-  }
-
-  // TODO: Убрать и перенести в send
-  saveInput({ target }) {
-    this.mes = target.value;
   }
 
   scrollToBottom(): void {
@@ -49,7 +42,10 @@ export class ChatComponent implements OnInit {
 
   send(event) {
     event.preventDefault();
-    sendMessage(this.mes);
-    this.mes = '';
+    const { message } = event.target;
+    if (message.value) {
+      this.onlineService.sendMessage(message.value);
+      message.value = '';
+    }
   }
 }

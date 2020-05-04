@@ -9,7 +9,6 @@ import { IsOnlineService } from './../is-online.service.js';
 export class MessageComponent {
   @Input() name: string;
   @Input() message: string;
-  @Input() status;
 
   constructor(public onlineService: IsOnlineService) {}
 }

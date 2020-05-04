@@ -1,6 +1,7 @@
 <div class="box">
   <div>
     <h2>Статус: {{ status ? "online" : "offline" }}</h2>
+
     <div #scrollMe class="chat-list">
       <app-message
         *ngFor="let message of list"
@@ -8,8 +9,9 @@
         [message]="message.message"
       ></app-message>
     </div>
+
     <form (submit)="send($event)">
-      <input type="text" [value]="mes" (input)="saveInput($event)" />
+      <input type="text" name="message" />
       <input type="submit" value="Send" />
     </form>
   </div>
