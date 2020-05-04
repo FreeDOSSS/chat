@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Injectable } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { IsOnlineService } from '../is-online.service.js';
 
 @Component({
@@ -12,14 +12,11 @@ export class MessageComponent implements OnInit {
   @Input() message: string;
   @Input() status;
 
-  constructor(private onlineService: IsOnlineService) {}
+  constructor(public onlineService: IsOnlineService) {}
 
   ngOnInit(): void {
-    this.getStatus();
     // this.onlineService.client$.subscribe((x) => {
     //   console.log('x', x);
     // });
   }
-
-  getStatus() {}
 }

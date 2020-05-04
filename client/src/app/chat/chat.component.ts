@@ -17,15 +17,17 @@ export class ChatComponent implements OnInit {
   list = [];
   // client = [];
 
-  constructor(private router: Router, private onlineService: IsOnlineService) {}
+  constructor(private router: Router, public onlineService: IsOnlineService) {}
 
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   ngOnInit(): void {
     isAuth(this.router);
+
     this.onlineService.list.subscribe((x) => {
       this.list = [...this.list, ...x];
     });
+
     this.onlineService.start();
 
     socket.onopen = () => (this.status = true);

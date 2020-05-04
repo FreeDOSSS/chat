@@ -8,6 +8,7 @@ import { ChatComponent } from './chat/chat.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageComponent } from './chat/message/message.component';
 import { OnlinePipe } from './chat/online.pipe';
+import { IsOnlineService } from './chat/is-online.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { OnlinePipe } from './chat/online.pipe';
     OnlinePipe,
   ],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
-  providers: [],
+  providers: [IsOnlineService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

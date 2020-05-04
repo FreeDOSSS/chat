@@ -6,16 +6,12 @@ import { socket } from '../../api/ws.js';
 })
 export class IsOnlineService {
   public client$ = new BehaviorSubject<any>([]);
-  // public client$ = new Subject<any[]>();
   public list = new Subject<any>();
 
-  constructor() {
-    this.client$.subscribe((v) => console.log('v', v));
-  }
+  constructor() {}
 
   start() {
     // TODO: Понять почему не работает в конструкторе
-    this.client$.next([]);
     socket.onmessage = (event) => {
       const body = JSON.parse(event.data);
       const arrClient = Object.values(body.client);
