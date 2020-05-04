@@ -1,7 +1,7 @@
 <div>
   <h6 class="title">
     {{ name }}
-    <span [class]="status"></span>
+    <span [class]="onlineService.client$ | async | online: name"></span>
   </h6>
 
   <p class="message">{{ message }}</p>
